@@ -187,8 +187,10 @@ function populateData() {
         
         $("#escrowHashList").append('<option value="'+escrows[i].id+'">'+escrows[i].title+'</option>');
         
-        latestHistory.push(escrows.history.pop());
-        latestHistoryIds.push(escrows.id);
+        if(escrows.history !== undefined && ecrows.history.length > 0) {
+            latestHistory.push(escrows.history.pop());
+            latestHistoryIds.push(escrows.id);
+        }
         
         if(escrows[i].messages.length > 0) {
             for(var j = 0; j < escrows[i].messages.length; j++) {
@@ -218,6 +220,8 @@ function populateData() {
         history += '</td>';
         history += '</tr>';
         $("#latestTransactions").append(history);
+    } else {
+        
     }
     
     if(unreadMessages.length > 0) {
@@ -249,7 +253,7 @@ function populateData() {
         
        
     } else {
-        $("#unreadMessagesPanel").parent().html('<div class="alert alert-info fade in"><button data-dismiss="alert" class="close close-sm" type="button">No new mesages at the moment</div>');
+        $("#unreadMessagesPanel").parent().html('<div class="alert alert-info fade in"><button data-dismiss="alert" class="close close-sm" type="button"><i class="icon-remove"></i></button>No new message at this time.</div>');
     }
     
     
