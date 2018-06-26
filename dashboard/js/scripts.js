@@ -1,5 +1,5 @@
-dapp = "n1k463NgbTkgoxdswQyZUBfvSfcK1jaTCpw";
-reqUrl = "https://testnet.nebulas.io";
+dapp = "n1iD87PzD1VMnLcfpqC6NmfkKbEQn6DAf7i";
+reqUrl = "https://mainnet.nebulas.io";
 
 
 serialNumber = "";
@@ -616,7 +616,7 @@ function generateEscrowHtml(escrowObj) {
                         } else if (escrowObj.fundsDeposit == 1) {
                             if(escrowObj.initiatedBy == 'seller' && escrowObj.seller === currentAddr) {
                                 var action = 'must be shipped';
-                                //var label = 'warning';
+                                var label = 'warning';
                                 //var cta = 'Click here to Ship the product!';
                                 //var onclick = 'ship(\''+escrowObj.id+'\');';
                                 var canDispute = 1;
@@ -629,7 +629,7 @@ function generateEscrowHtml(escrowObj) {
                                 var canDispute = 1;
                             } else if (escrowObj.initiatedBy == 'buyer' &&  escrowObj.seller === currentAddr) {
                                 var action = 'must be shipped';
-                                //var label = 'warning';
+                                var label = 'warning';
                                 //var cta = 'Click here to Ship the product!';
                                 //var onclick = 'ship(\''+escrowObj.id+'\');';
                                 var canDispute = 1;
@@ -841,7 +841,9 @@ function generateEscrowHtml(escrowObj) {
                             if(cta != undefined && cta.length > 0) {
                                 html += '<a id="add-sticky" class="btn btn-'+label+' btn-lg" href="javascript:;" onclick="'+onclick+'">'+cta+'</a><br /><br />';
                             } else {
-                                html += todo + '<br /><br />';
+								if(todo != undefined && todo.length > 0) {
+									html += todo + '<br /><br />';
+								}
                             }
                             
                             if (canShip == 1) {
@@ -849,7 +851,7 @@ function generateEscrowHtml(escrowObj) {
                                 //var cta = 'Click here to Ship the product!';
                                 //var onclick = 'ship(\''+escrowObj.id+'\');';
                                 
-                                html += '<a class="btn btn-warning  btn-lg" data-toggle="modal" href="#sp'+escrowObj.id+'" onclick="initiateDispute(\''+escrowObj.id+'\',\'reason\');">Click here to Ship the product!</a><br /><br />';
+                                html += '<a class="btn btn-warning  btn-lg" data-toggle="modal" href="#sp'+escrowObj.id+'">Click here to Ship the product!</a><br /><br />';
                                 
 
                                 html += '<div class="modal fade" id="sp'+escrowObj.id+'" tabindex="-1" role="dialog" aria-labelledby="spr'+escrowObj.id+'" aria-hidden="true">';
@@ -1469,9 +1471,10 @@ function initiateEscrowListener(resp) {
                     clearInterval(txTimer);
                 } else if(receipt.execute_result != "") {
                     $("#errors").html('<div class="alert alert-block alert-success fade in">Escrow has been submited</div>');
-                    $(window).scrollTop(0);
-                    //alert("Escrow has been submited");
-                    toggleLoading();
+					
+					localStorage.setItem("currentAddr", receipt.from);
+					updateData();
+					$(window).scrollTop(0);
                     clearInterval(txTimer);
                 }
             }); 
@@ -1885,9 +1888,9 @@ function depositFundsListener(resp) {
 
 
 
-function ship(escrowHash) {
+function ship(escrowHash, tracking, operator, info) {
     
-    var args = "[\"" + addslashes(escrowHash) +"\"]";
+    var args = "[\"" + addslashes(escrowHash) +"\",\"" + addslashes(tracking) +"\",\"" + addslashes(operator) +"\",\"" + addslashes(info) +"\"]";
 
     serialNumber = nebPay.call(dapp, 0, "ship", args, {
         qrcode: {
@@ -1922,6 +1925,56 @@ function shipListener(resp) {
                     clearInterval(txTimer);
                 } else if(receipt.execute_result != "") {
                     $("#errors").html('<div class="alert alert-block alert-success fade in">The product has been shipped</div>');
+                    $(window).scrollTop(0);
+                    updateData();
+                    clearInterval(txTimer);
+                }
+            }); 
+        }, 1000);
+    } else {
+        alert("Could not find transaction");
+    }
+}
+
+
+
+function initiateDispute(escrowHash, reason) {
+    
+    var args = "[\"" + addslashes(escrowHash) +"\",\"" + addslashes(reason) +"\"]";
+
+    serialNumber = nebPay.call(dapp, 0, "ship", args, {
+        qrcode: {
+            showQRCode: false
+        },
+        listener: initiateDisputeListener
+    });
+}
+
+
+function initiateDisputeListener(resp) {
+    toggleLoading();
+    if(resp == "Error: Transaction rejected by user") {
+        toggleLoading();
+        return false;
+    }
+    
+    if(resp !== null && resp.txhash !== null)
+    {   
+        clearInterval(txTimer);
+
+        txTimer = setInterval(function() {
+            
+            neb.setRequest(new HttpRequest(reqUrl));
+            neb.api.getTransactionReceipt({hash: resp.txhash}).then(function(receipt) {
+                console.log(receipt);
+                console.log(receipt.execute_result);
+                if(receipt.execute_result.indexOf("Error") !== -1) {
+                    $("#errors").html('<div class="alert alert-block alert-danger fade in">' + receipt.execute_result + '</div>');
+                    $(window).scrollTop(0);
+                    toggleLoading();
+                    clearInterval(txTimer);
+                } else if(receipt.execute_result != "") {
+                    $("#errors").html('<div class="alert alert-block alert-success fade in">The dispute has been initiated</div>');
                     $(window).scrollTop(0);
                     updateData();
                     clearInterval(txTimer);
