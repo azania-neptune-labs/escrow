@@ -176,7 +176,7 @@ Escrow.prototype = {
         
         this.disputeArray.put(this.disputeNr, 'genesis');
         //Developer dispute address, at the moment only him can dspute a transaction
-        this.disputeArrayMap.put('genesis', 'n1TJfk7sQ1mJXBPeHccS5QcFBbwW4SCAvqG');
+        this.disputeArrayMap.put('genesis', 'n1XVQAmgHrdtvCLbPk9GxWizAcaxNLuhTAP');
     },
     
     _validateEmail: function(email) {
