@@ -3,495 +3,330 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
-  <meta name="author" content="GeeksLabs">
-  <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
-  <link rel="shortcut icon" href="img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NAS-Escrow.com - Decentralized blockchain escrow platform</title>
+  <meta name="description" content="The first escrow platform built on Nebulas public blockchain.">
+  <meta name="keywords" content="nebulas blockchain escrow smart contract, decentralized escrow, escrow, nas">
 
-  <title>Creative - Bootstrap Admin Template</title>
-
-  <!-- Bootstrap CSS -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <!-- bootstrap theme -->
-  <link href="css/bootstrap-theme.css" rel="stylesheet">
-  <!--external css-->
-  <!-- font icon -->
-  <link href="css/elegant-icons-style.css" rel="stylesheet" />
-  <link href="css/font-awesome.min.css" rel="stylesheet" />
-  <!-- full calendar css-->
-  <link href="assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />
-  <link href="assets/fullcalendar/fullcalendar/fullcalendar.css" rel="stylesheet" />
-  <!-- easy pie chart-->
-  <link href="assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen" />
-  <!-- owl carousel -->
-  <link rel="stylesheet" href="css/owl.carousel.css" type="text/css">
-  <link href="css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
-  <!-- Custom styles -->
-  <link rel="stylesheet" href="css/fullcalendar.css">
-  <link href="css/widgets.css" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet">
-  <link href="css/style-responsive.css" rel="stylesheet" />
-  <link href="css/xcharts.min.css" rel=" stylesheet">
-  <link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,300|Raleway:300,400,900,700italic,700,300,600">
+  <link rel="stylesheet" type="text/css" href="css/jquery.bxslider.css">
+  <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/animate.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
   <!-- =======================================================
-    Theme Name: NiceAdmin
-    Theme URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-    Author: BootstrapMade
+    Theme Name: Baker
+    Theme URL: https://bootstrapmade.com/baker-free-onepage-bootstrap-theme/
+    Author: BootstrapMade.com
     Author URL: https://bootstrapmade.com
   ======================================================= -->
 </head>
 
 <body>
-  <!-- container section start -->
-  <section id="container" class="">
 
-
-    <header class="header dark-bg">
-      <div class="toggle-nav">
-        <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
-      </div>
-
-      <!--logo start-->
-      <a href="index.html" class="logo">NAS-ESCROW <span class="lite">Control Panel</span></a>
-      <!--logo end-->
-
-      <!--<div class="nav search-row" id="top_menu">
-        <ul class="nav top-menu">
-          <li>
-            <form class="navbar-form">
-              <input class="form-control" placeholder="Search" type="text">
-            </form>
-          </li>
-        </ul>
-      </div>-->
-
-      <div class="top-nav notification-row">
-        <!-- notificatoin dropdown start-->
-        <ul class="nav pull-right top-menu">
-
-          <!-- task notificatoin start -->
-          <li id="task_notificatoin_bar" class="dropdown">
-            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <i class="icon-task-l"></i>
-                            <span class="badge bg-important" id="pendingEscrows"></span>
-                        </a>
-            <ul class="dropdown-menu extended tasks-bar">
-              <div class="notify-arrow notify-arrow-blue"></div>
-              <li>
-                  <p class="blue" id="pendingEscrowsHeader">You have no pending escrows</p>
-              </li>
-              
-              <li class="external">
-                <a href="escrows.html">See All Escrows</a>
-              </li>
-            </ul>
-          </li>
-          <!-- task notificatoin end -->
-          <!-- inbox notificatoin start-->
-          <li id="mail_notificatoin_bar" class="dropdown">
-            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <i class="icon-envelope-l"></i>
-                            <span class="badge bg-important" id="unreadMessages"></span>
-                        </a>
-            <ul class="dropdown-menu extended inbox">
-              <div class="notify-arrow notify-arrow-blue"></div>
-              <li>
-                <p class="blue" id="messagesDropdownHeader">You have no new messages</p>
-              </li>
-              
-              <li>
-                <a href="messages.html">See all messages</a>
-              </li>
-            </ul>
-          </li>
-          <!-- inbox notificatoin end -->
-          
-          
-          <!-- user login dropdown start-->
-          <li class="dropdown">
-            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="profile-ava" id="profileAvatar">
-                            </span>
-                            <span class="username"></span>
-                            <b class="caret"></b>
-                        </a>
-            <ul class="dropdown-menu extended logout">
-              <div class="log-arrow-up"></div>
-              <li>
-                <a href="messages.html"><i class="icon_mail_alt"></i> Messages</a>
-              </li>
-              <li>
-                <a href="pending_escrows.html"><i class="icon_clock_alt"></i> Pending escrows</a>
-              </li>
-              <li>
-                  <a href="javascript:void(0);" onclick="logout();"><i class="icon_key_alt"></i> Log Out</a>
-              </li>
-              <li>
-                <a  href="javascript:void(0);" onclick="login();"><i class="icon_key_alt"></i> Relog </a>
-              </li>
-            </ul>
-          </li>
-          <!-- user login dropdown end -->
-        </ul>
-        <!-- notificatoin dropdown end-->
-      </div>
-    </header>
-    <!--header end-->
-
-    <!--sidebar start-->
-    <aside>
-      <div id="sidebar" class="nav-collapse ">
-        <!-- sidebar menu start-->
-        <ul class="sidebar-menu">
-          <li class="active">
-            <a class="" href="index.html">
-                          <i class="icon_house_alt"></i>
-                          <span>Dashboard</span>
-                      </a>
-          </li>
-          <li class="sub-menu">
-            <a href="javascript:;" class="">
-                          <i class="icon_document_alt"></i>
-                          <span>Escrows</span>
-                          <span class="menu-arrow arrow_carrot-right"></span>
-                      </a>
-            <ul class="sub">
-              <li><a class="" href="requested_escrows.html">Requested</a></li>
-              <li><a class="" href="pending_escrows.html">Pending</a></li>
-              <li><a class="" href="completed_escrows.html">Completed</a></li>
-              <li><a class="" href="escrows.html">View All</a></li>
-              
-            </ul>
-          </li>
-          <li class="sub-menu">
-            <a href="javascript:;" class="">
-                          <i class="icon_pencil"></i>
-                          <span>Messages</span>
-                          <span class="menu-arrow arrow_carrot-right"></span>
-                      </a>
-            <ul class="sub">
-              <li><a class="" href="add_message.html">Write one</a></li>
-              <li><a class="" href="messages.html">View All</a></li>
-            </ul>
-          </li>
-          <li>
-            <a class="" href="initiate_escrow.html">
-                          <i class="icon_genius"></i>
-                          <span>Initiate escrow</span>
-                      </a>
-          </li>
-          
-          <li>
-              <a class="" onclick="login();" href="javascript:void(0);">
-                    <i class="icon_lock"></i>
-                    <span>Login NAS</span>
-                </a>
-          </li>
-          
-
-
-        
-
-        </ul>
-        <!-- sidebar menu end-->
-      </div>
-    </aside>
-    <!--sidebar end-->
-    
-    <div class="loading" style="display:none;" id="loading">Loading&#8230;</div>
-
-    <!--main content start-->
-    <section id="main-content">
-      <section class="wrapper">
-        <!--overview start-->
-        <div class="row">
-          <div class="col-lg-12">
-            <h3 class="page-header"><i class="fa fa-laptop"></i> Dashboard</h3>
-            <ol class="breadcrumb">
-              <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-              <li><i class="fa fa-laptop"></i>Dashboard</li>
-            </ol>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <div class="info-box blue-bg">
-              <i class="fa fa-lightbulb-o"></i>
-              <div class="count" id="startedEscrows">0</div>
-              <div class="title">Disputed Escrows</div>
-            </div>
-            <!--/.info-box-->
-          </div>
-          <!--/.col-->
-
-          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <div class="info-box brown-bg">
-              <i class="fa fa-magnet"></i>
-              <div class="count" id="receivedEscrows">0</div>
-              <div class="title">Refunded/Rejected Escrows</div>
-            </div>
-            <!--/.info-box-->
-          </div>
-          <!--/.col-->
-
-          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <div class="info-box dark-bg">
-              <i class="fa fa-warning"></i>
-              <div class="count" id="pendingEscrowsStat">0</div>
-              <div class="title">Pending Escrows</div>
-            </div>
-            <!--/.info-box-->
-          </div>
-          <!--/.col-->
-
-          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <div class="info-box green-bg">
-            <i class="fa fa-thumbs-o-up"></i>
-              <div class="count" id="completedEscrows">0</div>
-              <div class="title">Completed Escrows</div>
-            </div>
-            <!--/.info-box-->
-          </div>
-          <!--/.col-->
-
-        </div>
-        <!--/.row-->
-
-        
-        <div class="row">
-            
-            <div class="col-lg-12 portlets">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <div class="pull-left">Initiate escrow</div>
-                <div class="clearfix"></div>
+  <div class="loader"></div>
+  <div id="myDiv">
+    <!--HEADER-->
+    <div class="header">
+      <div class="bg-color">
+        <header id="main-header">
+          <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+                <a class="navbar-brand" href="#">NAS<span class="logo-dec">ESCROW</span></a>
               </div>
-              <div class="panel-body">
-                  <div class="alert alert-block alert-danger fade in" id="extensionAlert" style="display:none;">
-                In order to interact with Nebulas blockchain you have to install Nebulas extension wallet: <a style="font-weight: bold;" href="https://chrome.google.com/webstore/detail/nasextwallet/gehjkhmhclgnkkhpfamakecfgakkfkco" target="_blank">HERE</a>
-              </div>
-                <div class="padd">
-                      <!-- Content -->
-                    
-                      <!-- Buttons -->
-                      <div class="form-group">
-                        <!-- Buttons -->
-                        <div class="col-lg-9">
-                            <button type="button" onclick="window.location.href='initiate_escrow.html'" class="btn btn-primary">Click here to initiate a <strong>NEW</strong> escrow transaction</button>
-                        </div>
-                      </div>
-
-
-                </div>
-                <div class="widget-foot">
-                  <!-- Footer goes here -->
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-
-
-        <!-- project team & activity start -->
-        <div class="row">
-          <div class="col-lg-6 portlets">
-            <!-- Widget -->
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <div class="pull-left">Unread Messages</div>
-                <div class="clearfix"></div>
-              </div>
-
-              <div class="panel-body">
-                <!-- Widget content -->
-                <div class="padd sscroll">
-
-                  <ul class="chats" id="unreadMessagesPanel">
-
-                  </ul>
-
-                </div>
-              </div>
-
-
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <!--Project Activity start-->
-            <section class="panel">
-              <div class="panel-heading">
-                <div class="row">
-                  <div class="col-lg-8 task-progress pull-left">
-                    Latest transaction actions
-                  </div>
+              <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                  <!--<li class="active"><a href="#main-header">Home</a></li>-->
                   
-                </div>
-              </div>
-              <table class="table table-hover personal-task">
-                <tbody id="latestTransactions">
-                  
-                </tbody>
-              </table>
-            </section>
-            <!--Project Activity end-->
-          </div>
-        </div><br><br>
-
-        <div class="row">
-          <div class="col-md-6 portlets">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h2><strong>Transactions Calendar</strong></h2>
-                
-
-              </div><br><br><br>
-              <div class="panel-body">
-                <!-- Widget content -->
-
-                <!-- Below line produces calendar. I am using FullCalendar plugin. -->
-                <div id="calendar"></div>
-
+                  <li class=""><a href="#feature">What is NAS-Escrow?</a></li>
+                  <li class=""><a href="#service">How it works?</a></li>
+                  <li class=""><a href="#portfolio">Under development</a></li>
+                  <li class=""><a href="#developers">For developers</a></li>
+                  <li class=""><a href="#contact">Contact Us</a></li>
+                  <li><a href="dashboard/initiate_escrow.html" style="color: #be9e21!important;">Start a new ESCROW</a></li>
+                </ul>
               </div>
             </div>
-
-          </div>
-
-          <div class="col-md-6 portlets">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <div class="pull-left">Send a message</div>
-                <div class="clearfix"></div>
-              </div>
-              <div class="panel-body">
-                <div class="padd">
-                    
-                  <div id="messageAlerts"></div>
-
-                  <div class="form quick-post">
-                    <!-- Edit profile form (not working)-->
-                    <form class="form-horizontal">
-                      <!-- Content -->
-                      <div class="form-group">
-                        <label class="control-label col-lg-2" for="content">Message</label>
-                        <div class="col-lg-10">
-                          <textarea class="form-control" id="messageContent"></textarea>
-                        </div>
-                      </div>
-                      <!-- Cateogry -->
-                      <div class="form-group">
-                        <label class="control-label col-lg-2">Escrow transaction</label>
-                        <div class="col-lg-10">
-                            <select class="form-control" id="escrowHashList">
-                              <option value="">Choose an escrow transaction</option>
-                            </select>
-                        </div>
-                      </div>
-
-                      <!-- Buttons -->
-                      <div class="form-group">
-                        <!-- Buttons -->
-                        <div class="col-lg-offset-2 col-lg-9">
-                            <button type="button" onclick="sendMessage($('#messageContent').val(), $('#escrowHashList').find(':selected').val())" class="btn btn-primary">Send</button>
-                          <button type="reset" class="btn btn-default">Reset</button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-
-
+          </nav>
+        </header>
+        <div class="wrapper">
+          <div class="container">
+            <div class="row">
+              <div class="banner-info text-center wow fadeIn delay-05s">
+                <h1 class="bnr-title">This is decentralised ESCROW<h1>
+                <h2 class="bnr-sub-title">Start trading any product now!</h2>
+                <p class="bnr-para">Based on <a style="color:#be9e21;" href="https://www.nebulas.io" target="_blank">Nebulas</a> blockchain and <a style="color:#be9e21;" href="">smart contract</a>, this platform provides a way for buyers and sellers to come to an agreement<br> and trade any product or item they desire in a safe manner, without 3rd parties.</p>
+                <div class="brn-btn">
+                  <a href="dashboard/initiate_escrow.html" class="btn btn-download">Start a transaction now!</a>
+                  <a href="#service" class="btn btn-more">Find out more...</a>
                 </div>
-                <div class="widget-foot">
-                  <!-- Footer goes here -->
+                <div class="overlay-detail">
+                  <a href="#feature"><i class="fa fa-angle-down"></i></a>
                 </div>
               </div>
             </div>
-
           </div>
-
         </div>
-        <!-- project team & activity end -->
-
-      </section>
-      <div class="text-right">
-        <div class="credits">
-          <!--
-            All the links in the footer should remain intact.
-            You can delete the links only if you purchased the pro version.
-            Licensing information: https://bootstrapmade.com/license/
-            Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
-          -->
-          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+    <!--/ HEADER-->
+    <!---->
+    <section id="feature" class="section-padding wow fadeIn delay-05s">
+      <div class="container">
+        <div class="row">
+        <div class="col-md-12 text-center">
+            <h2 class="service-title pad-bt15">What is NAS-ESCROW?</h2>
+            <hr class="bottom-line">
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+              <div class="item-img">
+                <img src="img/ser01.png">
+              </div>
+              <h3 class="pad-bt15">Decentralized</h3>
+              <p>There is <strong>no 3rd party involved</strong> in the transaction. The involved parties choose to ship and release the funds when they are ready.</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+              <div class="item-img">
+                <img src="img/ser02.png">
+              </div>
+              <h3 class="pad-bt15">Dashboard</h3>
+              <p>The platform is just a gateway to the <strong>Nebulas smart contract</strong> and provides the tools necessary to interact with the <strong>Blockchain</strong>.</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+              <div class="item-img">
+                <img src="img/ser03.png">
+              </div>
+              <h3 class="pad-bt15">Cost effective</h3>
+              <p>At this moment, there is <strong>NO transaction fee</strong>. The cost is the one the seller and buyer agreed upon.</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+              <div class="item-img">
+                <img src="img/ser04.png">
+              </div>
+              <h3 class="pad-bt15">Secure</h3>
+              <p>The <strong>NAS Blockchain</strong> provides the immutability and persistance of the transactions.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
-    <!--main content end-->
-  </section>
-  <!-- container section start -->
+    <!---->
+    <!---->
+    <section id="service" class="section-padding wow fadeInUp delay-05s">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <h2 class="service-title pad-bt15">How it works</h2>
+            <p class="sub-title pad-bt15">Below is a basic escrow transaction flow between a seller and a buyer. </p>
+            <hr class="bottom-line">
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="service-item">
+              <h3><span>1</span>Buyer/Seller initiates a transaction</h3>
+              <p>The buyer or the seller starts a transaction in which they describe the product details that is being traded and the price in NAS.</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="service-item">
+              <h3><span>2</span>The other party accepts the transaction</h3>
+              <p>The seller/buyer accepts the escrow transaction details and price and chooses to reject or accept the transaction.</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="service-item">
+              <h3><span>3</span>The seller ships the product</h3>
+              <p>After buyer has deposited the necessary funds within the Nebulas contract, the seller can choose to Ship the product and provide the shipment details.</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="service-item">
+              <h3><span>4</span>The buyer accepts the product</h3>
+              <p>After receiving the product, the buyer has X amount of days to inspect the item and release the funds to the seller.</p>
+            </div>
+          </div>
+          
+          <div class="col-md-12 text-center">
+            <hr class="bottom-line">
+            <p class="sub-title pad-bt15">The funds are being kept secure in the NEBULAS smart contract. They can't be released or refunded by anyone other<br /> than the parties involved. 
+                When buyer chooses to release the funds, they will automatically be credited within the seller NEBULAS adderess.
+                <br /><br />
+                <strong>In case of a disagreement between the parties</strong>, they both have an option to dispute the transaction, in which case it will be handled only by the nas-escrow developer <strong>without any additional fee</strong>.
+            </p>
+            <hr class="bottom-line">
+          </div>
+            
+        </div>
+      </div>
+    </section>
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <section id="portfolio" class="section-padding wow fadeInUp delay-05s">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <h2 class="service-title pad-bt15">What's under development</h2>
+            <p class="sub-title pad-bt15">Below is a list of under development features in order to<br /> facilitate the usefulness of the Escrow smart contract. Hover over each section for more details.</p>
+            <hr class="bottom-line">
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12 portfolio-item padding-right-zero mr-btn-15">
+            <figure>
+              <img src="img/ux2.jpg" style="width:278px!important; height: 180px!important;" class="img-responsive">
+              <figcaption>
+                <h2>Platform UX improvements</h2>
+                <p>The current nas-escrow.com platform should iterate between user experience improvements. The same goes for the dashboard.</p>
+              </figcaption>
+            </figure>
+          </div>
+            
+          <div class="col-md-3 col-sm-6 col-xs-12 portfolio-item padding-right-zero mr-btn-15">
+            <figure>
+              <img src="img/code3.jpg"  style="width:278px!important; height: 180px!important;" class="img-responsive">
+              <figcaption>
+                <h2>REST-ful API</h2>
+                <p>We are currently developing a REST web service that should be implemented by developers in order to facilitate trading of any item on other platforms.</p>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12 portfolio-item padding-right-zero mr-btn-15">
+            <figure>
+              <img src="img/enroll2.jpeg"  style="width:278px!important; height: 180px!important;" class="img-responsive">
+              <figcaption>
+                <h2>Dispute Enrollment</h2>
+                <p>This feature should allow any person to handle a dispute for a small % NAS fee</p>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12 portfolio-item padding-right-zero mr-btn-15">
+            <figure>
+              <img src="img/ai2.jpeg" style="width:278px!important; height: 180px!important;" class="img-responsive">
+              <figcaption>
+                <h2>Dispute AI</h2>
+                <p>The dispute should be handled by an AI, not by a person, in order for the process to be entirely non dependant of human factor</p>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!---->
+    
+    
+    <!---->
+    <section id="developers" class="section-padding wow fadeInUp delay-05s">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <h2 class="service-title pad-bt15">Where can you find the contract code?</h2>
+            <p class="sub-title pad-bt15">Both the platform and contract code are linked below: </p>
+            <hr class="bottom-line">
+          </div>
+          
+          <div class="col-md-12 text-center">
+            <p class="sub-title pad-bt15">
+                <a href="#" class="btn btn-download" target="_blank">Smart contract</a>
+                <a href="#" class="btn btn-download" target="_blank">Github code</a>
+            </p>
+            
+          </div>
+            
+        </div>
+      </div>
+    </section>
+    
+    <!---->
+    <section id="contact" class="section-padding wow fadeInUp delay-05s">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center white">
+            <h2 class="service-title pad-bt15">Contact us</h2>
+            <p class="sub-title pad-bt15">For any platform problems or enquiries, or any dispute arrangements <br>please use the email address below.</p>
+            <hr class="bottom-line white-bg">
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="loction-info white">
+              <p><i class="fa fa-envelope-o fa-fw pull-left fa-2x"></i>support@nas-escrow.com</p>
+              <p><i class="fa fa-envelope-o fa-fw pull-left fa-2x"></i>nas.escrow@gmail.com</p>
+            </div>
+          </div>
+          <!--<div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="contact-form">
+              <div id="sendmessage">Your message has been sent. Thank you!</div>
+              <div id="errormessage"></div>
+              <form action="" method="post" role="form" class="contactForm">
+                <div class="col-md-6 padding-right-zero">
+                  <div class="form-group">
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                    <div class="validation"></div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
+                    <div class="validation"></div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+                    <div class="validation"></div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
+                    <div class="validation"></div>
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-submit">SEND NOW</button>
+                </div>
+              </form>
 
-  <!-- javascripts -->
-  <script src="js/jquery.js"></script>
-  <script src="js/jquery-ui-1.10.4.min.js"></script>
-  <script src="js/jquery-1.8.3.min.js"></script>
-  <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.min.js"></script>
-  <!-- bootstrap -->
+            </div>
+          </div>-->
+        </div>
+      </div>
+    </section>
+    <!---->
+    <!---->
+    <footer id="footer">
+      <div class="container">
+        <div class="row text-center">
+          <p>&copy; Baker Theme. All Rights Reserved.</p>
+          <div class="credits">
+            <!--
+              All the links in the footer should remain intact.
+              You can delete the links only if you purchased the pro version.
+              Licensing information: https://bootstrapmade.com/license/
+              Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Baker
+            -->
+            Designed by <a href="https://bootstrapmade.com/">Bootstrap Templates</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!---->
+  </div>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery.easing.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
-  <!-- nice scroll -->
-  <script src="js/jquery.scrollTo.min.js"></script>
-  <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
-  <!-- charts scripts -->
-  <script src="assets/jquery-knob/js/jquery.knob.js"></script>
-  <script src="js/jquery.sparkline.js" type="text/javascript"></script>
-  <script src="assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
-  <script src="js/owl.carousel.js"></script>
-  <!-- jQuery full calendar -->
-  <<script src="js/fullcalendar.min.js"></script>
-    <!-- Full Google Calendar - Calendar -->
-    <script src="assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
-    <!--script for this page only-->
-    <script src="js/calendar-custom.js"></script>
-    <script src="js/jquery.rateit.min.js"></script>
-    <!-- custom select -->
-    <script src="js/jquery.customSelect.min.js"></script>
-    <script src="assets/chart-master/Chart.js"></script>
-
-    
-    <!-- custom script for this page-->
-    <script src="js/sparkline-chart.js"></script>
-    <script src="js/easy-pie-chart.js"></script>
-    <script src="js/jquery-jvectormap-1.2.2.min.js"></script>
-    <script src="js/jquery-jvectormap-world-mill-en.js"></script>
-    <script src="js/xcharts.min.js"></script>
-    <script src="js/jquery.autosize.min.js"></script>
-    <script src="js/jquery.placeholder.min.js"></script>
-    <script src="js/gdp-data.js"></script>
-    <script src="js/morris.min.js"></script>
-    <script src="js/sparklines.js"></script>
-    <script src="js/charts.js"></script>
-    <script src="js/jquery.slimscroll.min.js"></script>
-    <script src="js/contract/bignumber.js"></script>
-    <script src="js/identicon/pnglib.js"></script>
-    <script src="js/identicon/identicon.js"></script>
-    
-    <!-- NEBULAS -->
-    <script src="js/nebulas/nebPay.js"></script>
-    <script src="js/nebulas/nebulas.js"></script>
-    
-    <!--custome script for all page-->
-    <script src="js/scripts.js"></script>
-    <script>
-
-        $(function() {
-          $('select.styled').customSelect();
-        });
-
-      
-    </script>
+  <script src="js/wow.js"></script>
+  <script src="js/jquery.bxslider.min.js"></script>
+  <script src="js/custom.js"></script>
+  <script src="contactform/contactform.js"></script>
 
 </body>
-
 </html>

@@ -574,7 +574,7 @@ Escrow.prototype = {
         var from = Blockchain.transaction.from;
         var escrow = this.escrows.get(escrowHash);
         
-        if(tracking == "" || operator == "") {
+        if(tracking == undefined || operator == undefined || tracking == "" || operator == "" || tracking.length <= 0 || operator.length <= 0) {
             throw new Error("Please provide a tracking number and the operator name");
         }
         
@@ -725,7 +725,7 @@ Escrow.prototype = {
         for(var i = 1; i <= this.escrowNr; i++){
             var key = this.escrowArrayMap.get(i);
             var object = this.escrows.get(key);
-            if(object.buyer === from || object.seller === from) {
+            if(object.buyer === from || object.seller === from || this._isValidDisputeAddress()) {
                 result.push(object);
             }
             
