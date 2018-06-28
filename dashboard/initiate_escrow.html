@@ -129,12 +129,12 @@
               <li>
                 <a href="escrows.html"><i class="icon_clock_alt"></i> Escrows</a>
               </li>
-              <li>
+              <!--<li>
                   <a href="javascript:void(0);" onclick="logout();"><i class="icon_key_alt"></i> Log Out</a>
               </li>
               <li>
                 <a  href="javascript:void(0);" onclick="login();"><i class="icon_key_alt"></i> Update info</a>
-              </li>
+              </li>-->
             </ul>
           </li>
           <!-- user login dropdown end -->
@@ -178,12 +178,12 @@
                           <span>Initiate escrow</span>
                       </a>
           </li>
-          <li>
+          <!--<li>
               <a class="" onclick="login();" href="javascript:void(0);">
                     <i class="icon_lock"></i>
                     <span>Login NAS</span>
                 </a>
-          </li>
+          </li>-->
           
 
 
@@ -510,15 +510,13 @@
     <!--custome script for all page-->
     <script src="js/scripts.js"></script>
     <script>
-        //NAS AVATAR
-        var hash = 'n1TJfk7sQ1mJXBPeHccS5QcFBbwW4SCAvqG';
-        var data = new Identicon(hash).toString();
-        $("#profileAvatar").html('<img width="35" src="data:image/png;base64,' + data + '">');
-        
 
-        $('#dp1').datepicker({
-            format: 'mm-dd-yyyy'
-          });
+        $(document).ready(function(){
+            updateWalletAddress(function(){
+        	  	toggleLoading();
+        		updateData();
+        	});
+        });
 
       
     </script>

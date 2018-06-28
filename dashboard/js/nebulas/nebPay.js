@@ -6561,10 +6561,6 @@ NebPay.prototype = {
 	queryPayInfo: function (serialNumber) {
 		var url = config.payUrl + "/query?payId=" + serialNumber;
 		return http.get(url);
-	},
-        txInfo: function (tx) {
-		//var url = config.payUrl + "/query?payId=" + serialNumber;
-		return http.get("https://explorer.nebulas.io/#/testnet/tx/" + tx);
 	}
 };
 

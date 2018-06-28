@@ -498,7 +498,7 @@ Escrow.prototype = {
         for( var i = 1; i <= this.disputeNr; i++) {
             var key = this.disputeArray.get(i);
             var val = this.disputeArrayMap.get(key);
-            if(val === Blockchain.transaction.from); {
+            if(val === Blockchain.transaction.from) {
                 return true;
             }
         }

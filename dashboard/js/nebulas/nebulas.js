@@ -1476,7 +1476,7 @@ Transaction.prototype = {
      *    gasLimit: 2000000
      * });
      * var txHash = tx.hashTransaction();
-     * //Uint8Array(32) [211, 213, 102, 103, 23, 231, 246, 141, 20, 202, 210, 25, 92, 142, 162, 242, 232, 95, 44, 239, 45, 57, 241, 61, 34, 2, 213, 160, 17, 207, 75, 40]
+     * //Uint8Array(32) [211, 213, 102, 103, 23, 231, 246, 141, 20, 202, 210, 25, 92, 142, 162, 242, 232, 95, 44, 239, 45, 57, 241, 61, 34, 2, 213, 160, 17, 207, 75, 40]
      */
     hashTransaction: function () {
         var Data = root.lookup("corepb.Data");
@@ -1531,7 +1531,7 @@ Transaction.prototype = {
      *    gasLimit: 2000000
      * });
      * txData = tx.toPlainObject();
-     * // {chainID: 1001, from: "n1USdDKeZXQYubA44W2ZVUdW1cjiJuqswxp", to: "n1SAeQRVn33bamxN4ehWUT7JGdxipwn8b17", value: 1000000000000000000, nonce: 1, …}
+     * // {chainID: 1001, from: "n1USdDKeZXQYubA44W2ZVUdW1cjiJuqswxp", to: "n1SAeQRVn33bamxN4ehWUT7JGdxipwn8b17", value: 1000000000000000000, nonce: 1, …}
      */
     toPlainObject: function () {
         return {

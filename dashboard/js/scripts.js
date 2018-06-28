@@ -3,15 +3,15 @@ reqUrl = "https://mainnet.nebulas.io";
 
 
 serialNumber = "";
-NebPay = require("nebpay");
-nebPay = new NebPay();
 txTimer = null;
-HttpRequest = require("nebulas").HttpRequest;
-Neb = require("nebulas").Neb;
-Account = require("nebulas").Account;
-Transaction = require("nebulas").Transaction;
-Unit = require("nebulas").Unit;
-neb = new Neb();
+
+var nebulas = require("nebulas"),
+Account = nebulas.Account,
+neb = new nebulas.Neb();
+neb.setRequest(new nebulas.HttpRequest(reqUrl));
+
+var NebPay = require("nebpay");
+var nebPay = new NebPay();
 
 function toggleLoading() {
     $("#loading").toggle();
@@ -140,10 +140,19 @@ function getEscrowsListener(resp) {
     if(resp.result !== null)
     {   
         var currentAddr = localStorage.getItem("currentAddr");
-        
-        console.log(JSON.parse(resp.result));
+        console.log('raspuns');
+        console.log(resp.result);
+		console.log(resp);
+		if(resp.result == 'Unexpected token < in JSON at position 0') {
+			toggleLoading();
+			alert("Blockchain did not respond, please refresh the page and try again.");
+			return false;
+		}
         
         var escrows = JSON.parse(resp.result);
+		
+		
+		console.log(escrows);
         
         var notAllowed = false;
         for (var i = 0; i < escrows.length; i++) {
@@ -185,7 +194,7 @@ function populateData() {
     var escrows = JSON.parse(localStorage.getItem("escrows"));
     
     
-    
+    $("#loginBox").html('');
     
     //Show login CTA in case of user is logged out
     if(currentAddr === undefined || currentAddr == null || currentAddr == '') {
@@ -222,8 +231,6 @@ function populateData() {
         loginBoxHtml += '</div>';
         $("#loginBox").html(loginBoxHtml);
         
-    } else {
-        $("#loginBox").html('');
     }
     
     
@@ -264,6 +271,8 @@ function populateData() {
         }
     }
     
+	
+	$("#latestTransactions").html('');
     
     //Latest transaction history list to be displayed on index
     if(latestHistory.length > 0) {
@@ -320,8 +329,11 @@ function populateData() {
         $("#latestTransactions").parent().parent().append('<div class="panel-body"><div class="alert alert-info fade in"><button data-dismiss="alert" class="close close-sm" type="button"><i class="icon-remove"></i></button>No transaction history.</div></div>');
     }
     
+	
+	$("#unreadMessagesPanel").html('');
+	$( "#messagesDropdownHeader" ).parent().nextAll().remove();
     
-    
+    //$( "#messagesDropdownHeader" ).parent().html('');
     //Unread messages list  on top right corner
     if(unreadMessages.length > 0) {
         $("#unreadMessages").html(unreadMessages.length);
@@ -342,7 +354,7 @@ function populateData() {
 
               msg += '<div class="chat-content">';
                 msg += '<div class="chat-meta">' + unreadMessagesTitles[i] + '<span class="pull-right">'+unreadMessages[i].when+'</span></div>';
-                msg += unreadMessages[i].message;
+                msg += unreadMessages[i].message.substring(0, 30) + '...';
                 msg += '<div class="clearfix"></div>';
               msg += '</div>';
             msg += '</li>';
@@ -455,6 +467,9 @@ function populateData() {
     $("#pendingEscrowsStat").html(pendingEscrowsNr);
     $("#completedEscrows").html(completedEscrows);
     
+	$("#pendingEscrows").html('');
+	$("#pendingEscrowsHeader").html('You have 0 pending escrows');
+	$( "#pendingEscrowsHeader" ).parent().nextAll().remove();
     //Pending escrow list on top right corner of the main menu
     if(pendingEscrows.length > 0) {
         $("#pendingEscrows").html(pendingEscrows.length);
@@ -544,7 +559,7 @@ function generateEscrowHtml(escrowObj) {
     
     html += '<div class="panel panel-default">';
         html += '<div class="panel-heading">';
-            html += '<h5 class="panel-title" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#'+escrowObj.id+'">';
+            html += '<h5 class="panel-title collapsed" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#'+escrowObj.id+'">';
               html += '<table width="100%">';
                   html += '<tr>';
                     if(escrowObj.initiatedBy == 'buyer' && escrowObj.buyer === currentAddr) {
@@ -567,14 +582,14 @@ function generateEscrowHtml(escrowObj) {
                     var canRefund = 0;
                     var canShip = 0;
                     
-                    var amount = escrowObj.price;
+                    var amount = parseFloat(escrowObj.price);
                     
                     if(escrowObj.shipping.whoPays == 'seller' && escrowObj.seller == currentAddr) {
-                        amount += escrowObj.shipping.cost;
+                        amount += parseFloat(escrowObj.shipping.cost);
                     } else if(escrowObj.shipping.whoPays == 'buyer' && escrowObj.buyer == currentAddr) {
-                        amount += escrowObj.shipping.cost;
+                        amount += parseFloat(escrowObj.shipping.cost);
                     } else if(escrowObj.shipping.whoPays == '50/50') {
-                        amount += escrowObj.shipping.cost/2;
+                        amount += parseFloat(escrowObj.shipping.cost/2);
                     }
                     
                     
@@ -755,7 +770,7 @@ function generateEscrowHtml(escrowObj) {
             html += '</h5>';
         html += '</div>';
         
-        html += '<div id="'+escrowObj.id+'" class="panel-collapse collapse in" style="background: #d1ded9">';
+        html += '<div id="'+escrowObj.id+'" class="panel-collapse collapse" style="background: #d1ded9">';
           html += '<div class="panel-body">';
 
               html += '<div class="row">';
@@ -1114,7 +1129,7 @@ function generateEscrowHtml(escrowObj) {
                         html += '</header>';
                         html += '<div class="panel-body">';
 
-                            html += 'div class="form-group m-bot15">';
+                            html += '<div class="form-group m-bot15">';
                               html += '<label class="col-sm-4 control-label">Who initiated the dispute</label>';
                               html += '<div class="col-sm-8">';
                                   html += '<a href="https://explorer.nebulas.io/#/address/'+escrowObj.whoInitiatedDispute+'" target="_blank"><span class="label label-info">'+escrowObj.whoInitiatedDispute+'</span></a>';
@@ -1380,7 +1395,6 @@ function markAsReadListener(resp) {
 
         txTimer = setInterval(function() {
             
-            neb.setRequest(new HttpRequest(reqUrl));
             neb.api.getTransactionReceipt({hash: resp.txhash}).then(function(receipt) {
                 if(receipt.execute_result.indexOf("Error") !== -1) {
                     $("#errors").html('<div class="alert alert-block alert-danger fade in">' + receipt.execute_result + '</div>');
@@ -1424,19 +1438,20 @@ function getEscrowsListenerCall(resp) {
 
         txTimer = setInterval(function() {
             
-            neb.setRequest(new HttpRequest(reqUrl));
             neb.api.getTransactionReceipt({hash: resp.txhash}).then(function(receipt) {
-                console.log(receipt);
-                console.log(receipt.execute_result);
                 if(receipt.execute_result != '') {
                     clearInterval(txTimer);
                     localStorage.setItem("currentAddr", receipt.from);
+					console.log(receipt);
+					
+					
                     serialNumber = nebPay.simulateCall(dapp, 0, "getEscrows", "", {
                         qrcode: {
                             showQRCode: false
                         },
                         listener: getEscrowsListener
                     });
+					
                 }
             }); 
         }, 1000);
@@ -1459,7 +1474,6 @@ function initiateEscrowListener(resp) {
 
         txTimer = setInterval(function() {
             
-            neb.setRequest(new HttpRequest(reqUrl));
             neb.api.getTransactionReceipt({hash: resp.txhash}).then(function(receipt) {
                 console.log(receipt);
                 console.log(receipt.execute_result);
@@ -1499,7 +1513,6 @@ function sendMessageListener(resp) {
 
         txTimer = setInterval(function() {
             
-            neb.setRequest(new HttpRequest(reqUrl));
             neb.api.getTransactionReceipt({hash: resp.txhash}).then(function(receipt) {
                 console.log(receipt);
                 console.log(receipt.execute_result);
@@ -1683,13 +1696,71 @@ function logout() {
 }
 
 
-function updateData() {
+/*function updateData() {
     serialNumber = nebPay.simulateCall(dapp, 0, "getEscrows", "", {
         qrcode: {
             showQRCode: false
         },
         listener: getEscrowsListener
     });
+}*/
+
+function updateData() {
+
+    var value = "0";
+    var nonce = "0"
+    var gas_price = "1000000"
+    var gas_limit = "2000000"
+	
+    var contract = {
+        "function": 'getEscrows',
+        "args": "[]"
+    }
+	
+    neb.api.call(localStorage.getItem('currentAddr'), dapp, value, nonce, gas_price, gas_limit, contract).then(function (resp) {
+        if(resp.result)
+		{
+			var currentAddr = localStorage.getItem("currentAddr");
+			
+			
+			var escrows = JSON.parse(resp.result);
+			
+			
+			console.log(escrows);
+			
+			var notAllowed = false;
+			for (var i = 0; i < escrows.length; i++) {
+				if(escrows[i].seller != currentAddr && escrows[i].buyer != currentAddr) {
+					notAllowed = true;
+				}
+			}
+			toggleLoading();
+			if(notAllowed === false) {
+				localStorage.setItem("escrows", JSON.stringify(escrows));
+				populateData();
+				var escrows = JSON.parse(localStorage.getItem("escrows"));
+				
+				//update escrows page
+				$("#accordion").html('');
+				if($("#accordion") !== undefined) {
+					if(escrows.length > 0) {
+						for(var i = 0; i < escrows.length; i++) {
+							$("#accordion").append(generateEscrowHtml(escrows[i]));
+						}
+					} else {
+						$("#errors").html('<div class="alert alert-info fade in"><button data-dismiss="alert" class="close close-sm" type="button"><i class="icon-remove"></i></button>No escrow transactions at this time.</div>');
+					}
+				}
+				
+			} else {
+				localStorage.removeItem("escrows");
+				alert("Current address has escrows which he is not allowed to.")
+			}
+		}
+    }).catch(function (err) {
+		toggleLoading();
+        console.log(err);
+    })
 }
 
 
@@ -1762,7 +1833,6 @@ function acceptEscrowListener(resp) {
 
         txTimer = setInterval(function() {
             
-            neb.setRequest(new HttpRequest(reqUrl));
             neb.api.getTransactionReceipt({hash: resp.txhash}).then(function(receipt) {
                 console.log(receipt);
                 console.log(receipt.execute_result);
@@ -1813,7 +1883,6 @@ function rejectEscrowListener(resp) {
 
         txTimer = setInterval(function() {
             
-            neb.setRequest(new HttpRequest(reqUrl));
             neb.api.getTransactionReceipt({hash: resp.txhash}).then(function(receipt) {
                 console.log(receipt);
                 console.log(receipt.execute_result);
@@ -1864,7 +1933,6 @@ function depositFundsListener(resp) {
 
         txTimer = setInterval(function() {
             
-            neb.setRequest(new HttpRequest(reqUrl));
             neb.api.getTransactionReceipt({hash: resp.txhash}).then(function(receipt) {
                 console.log(receipt);
                 console.log(receipt.execute_result);
@@ -1914,7 +1982,6 @@ function shipListener(resp) {
 
         txTimer = setInterval(function() {
             
-            neb.setRequest(new HttpRequest(reqUrl));
             neb.api.getTransactionReceipt({hash: resp.txhash}).then(function(receipt) {
                 console.log(receipt);
                 console.log(receipt.execute_result);
@@ -1942,7 +2009,7 @@ function initiateDispute(escrowHash, reason) {
     
     var args = "[\"" + addslashes(escrowHash) +"\",\"" + addslashes(reason) +"\"]";
 
-    serialNumber = nebPay.call(dapp, 0, "ship", args, {
+    serialNumber = nebPay.call(dapp, 0, "initiateDispute", args, {
         qrcode: {
             showQRCode: false
         },
@@ -1964,7 +2031,6 @@ function initiateDisputeListener(resp) {
 
         txTimer = setInterval(function() {
             
-            neb.setRequest(new HttpRequest(reqUrl));
             neb.api.getTransactionReceipt({hash: resp.txhash}).then(function(receipt) {
                 console.log(receipt);
                 console.log(receipt.execute_result);
@@ -2014,7 +2080,6 @@ function refundEscrowListener(resp) {
 
         txTimer = setInterval(function() {
             
-            neb.setRequest(new HttpRequest(reqUrl));
             neb.api.getTransactionReceipt({hash: resp.txhash}).then(function(receipt) {
                 console.log(receipt);
                 console.log(receipt.execute_result);
@@ -2064,7 +2129,6 @@ function releaseFundsListener(resp) {
 
         txTimer = setInterval(function() {
             
-            neb.setRequest(new HttpRequest(reqUrl));
             neb.api.getTransactionReceipt({hash: resp.txhash}).then(function(receipt) {
                 console.log(receipt);
                 console.log(receipt.execute_result);
@@ -2104,5 +2168,28 @@ function notify(escrow, action, who) {
             //error handling
         },
         dataType: "json"
+    });
+}
+
+
+function updateWalletAddress(callback) {
+    window.postMessage({
+        "target": "contentscript",
+        "data": {},
+        "method": "getAccount",
+    }, "*");
+
+    window.addEventListener('message', function (e) {
+        if (e.data && e.data.data) 
+		{
+            if (e.data.data.account) {
+				localStorage.setItem("currentAddr", e.data.data.account);
+				
+                callback();
+
+            }else{
+            }
+        }else{
+        }
     });
 }
