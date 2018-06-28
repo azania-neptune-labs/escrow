@@ -1,4 +1,4 @@
-dapp = "n1iD87PzD1VMnLcfpqC6NmfkKbEQn6DAf7i";
+dapp = "n1qo58xtUWzNHd5NdijRyBLEwHooApCbFgg";
 reqUrl = "https://mainnet.nebulas.io";
 
 
@@ -161,10 +161,17 @@ function getEscrowsListener(resp) {
             }
         }
         toggleLoading();
+		
+		if(escrows.length == 0) {
+			$("#errors").html('<div class="alert alert-info fade in"><button data-dismiss="alert" class="close close-sm" type="button"><i class="icon-remove"></i></button>No escrow transactions at this time.</div>');
+			return false;
+		}
+		
         if(notAllowed === false) {
             localStorage.setItem("escrows", JSON.stringify(escrows));
             populateData();
             var escrows = JSON.parse(localStorage.getItem("escrows"));
+			escrows = escrows.reverse();
             
             //update escrows page
             $("#accordion").html('');
@@ -192,6 +199,7 @@ function getEscrowsListener(resp) {
 function populateData() {
     var currentAddr = localStorage.getItem("currentAddr");
     var escrows = JSON.parse(localStorage.getItem("escrows"));
+	escrows = escrows.reverse();
     
     
     $("#loginBox").html('');
@@ -234,9 +242,7 @@ function populateData() {
     }
     
     
-    if(escrows == null || escrows == undefined || escrows.length == 0) {
-        return false;
-    }
+    
     
     
     //Top right hash ICON
@@ -245,6 +251,9 @@ function populateData() {
     $('.username').html(currentAddr);
     $("#profileAvatar").html('<img width="35" src="data:image/png;base64,' + data + '">');
     
+	if(escrows == null || escrows == undefined || escrows.length == 0) {
+        return false;
+    }
     
     
     //Unread messages and latest history action to be displayed on top right corner
@@ -252,6 +261,7 @@ function populateData() {
     var unreadMessagesTitles = [];
     var latestHistory = [];
     var latestHistoryIds = [];
+	$("#escrowHashList").html('');
     for(var i=0; i < escrows.length; i++) {
         
         $("#escrowHashList").append('<option value="'+escrows[i].id+'">'+escrows[i].title+'</option>');
@@ -543,6 +553,72 @@ function populateData() {
         $( "#pendingEscrowsHeader" ).parent().after(htmlPendingEscrows);
     }
     
+	
+	var allMessages = [];
+    var allMessagesProductTitle = [];
+    var allEscrowsHashes = [];
+    
+    for( var i = 0; i < escrows.length; i++ ) {
+        for( var j = 0; j < escrows[i].messages.length; j++) {
+            allMessages.push(escrows[i].messages[j]);
+            allMessagesProductTitle.push(escrows[i].title);
+            allEscrowsHashes.push(escrows[i].id);
+        }
+    }
+    
+    
+    if(allMessages.length > 0) {
+        
+        var messagesHtml = '';
+        var modalHtml = '';
+        
+        for( var i = 0; i < allMessages.length; i++ ) {
+            
+            var hash = allMessages[i].who;
+            var data = new Identicon(hash).toString();
+            
+            var read = 0;
+            
+            if(allMessages[i].read == 1 || allMessages[i].who == localStorage.getItem("currentAddr")) {
+                read = 1;
+            }
+            
+            messagesHtml += '<tr data-toggle="modal" href="#myModal'+i+'">';
+                messagesHtml += '<td class="read'+read+'">'+allMessages[i].message.substring(0, 30)+'</td>';
+                messagesHtml += '<td class="read'+read+'"><span class="badge bg-info">'+allMessagesProductTitle[i]+'</span></td>';
+                messagesHtml += '<td class="read'+read+'" style="text-align:right;">'+allMessages[i].when+'</td>';
+                messagesHtml += '<td class="read'+read+'"><span class="profile-ava"><img width="30" src="data:image/png;base64,' + data + '"></span></td>';
+            messagesHtml += '</tr>';
+            
+            modalHtml += '<div class="modal fade" id="myModal'+i+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel'+i+'" aria-hidden="true">';
+              modalHtml += '<div class="modal-dialog">';
+                modalHtml += '<div class="modal-content">';
+                  modalHtml += '<div class="modal-header">';
+                    modalHtml += '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+                    modalHtml += '<h4 class="modal-title">'+allMessagesProductTitle[i]+'</h4>';
+                  modalHtml += '</div>';
+                  modalHtml += '<div class="modal-body">';
+
+                    modalHtml += allMessages[i].message;
+
+                  modalHtml += '</div>';
+                  modalHtml += '<div class="modal-footer">';
+                  if(allMessages[i].read == 0 && allMessages[i].who !== localStorage.getItem("currentAddr")) {
+                        modalHtml += '<button class="btn btn-success" type="button" onclick="markAsRead(\''+allEscrowsHashes[i]+'\',\''+allMessages[i].id+'\', $(this));">Mark as read</button>';
+                    }
+                    modalHtml += '<button data-dismiss="modal" class="btn btn-default" type="button">Close</button>';
+                  modalHtml += '</div>';
+                modalHtml += '</div>';
+              modalHtml += '</div>';
+            modalHtml += '</div>';
+            
+        }
+        $("#latestMessages").html(messagesHtml);
+        $("#latestMessages").parent().parent().append(modalHtml);
+        //console.log(modalHtml);
+    } else {
+        $("#latestMessages").parent().html('<div class="alert alert-info fade in"><button data-dismiss="alert" class="close close-sm" type="button"><i class="icon-remove"></i></button>No new message at this time.</div>');
+    }
     
     //Initiate calendar from index
     initCalendar();
@@ -600,7 +676,7 @@ function generateEscrowHtml(escrowObj) {
                             var action = 'must be accepted';
                             var label = 'success';
                             var cta = 'Click here to Accept the transaction and deposit the funds!';
-                            var onclick = 'acceptEscrow(\''+escrowObj.id+'\');';
+							var onclick = 'acceptEscrow(\''+escrowObj.id+'\',\''+amount+'\');';
                             var canReject = 1;
                         } else if(escrowObj.initiatedBy == 'buyer' &&  escrowObj.buyer === currentAddr) {
                             var todo = 'The seller must accept the transaction';
@@ -608,7 +684,8 @@ function generateEscrowHtml(escrowObj) {
                             var action = 'must be accepted';
                             var label = 'success';
                             var cta = 'Click here to Accept the transaction!';
-                            var onclick = 'acceptEscrow(\''+escrowObj.id+'\');';
+							var onclick = 'acceptEscrow(\''+escrowObj.id+'\', 0);';
+							
                             var canReject = 1;
                         }
                     } else if(escrowObj.status == 1) {
@@ -913,7 +990,7 @@ function generateEscrowHtml(escrowObj) {
                             }
                             
                             if(canRefund == 1) {
-                                html += '<a id="add-sticky" class="btn btn-info btn-lg" href="javascript:;" onclick="refund(\''+escrowObj.id+'\');">Refund transaction</a><br /><br />';    
+                                html += '<a id="add-sticky" class="btn btn-info btn-lg" href="javascript:;" onclick="refundEscrow(\''+escrowObj.id+'\');">Refund transaction</a><br /><br />';    
                             }
                             if(canReject == 1) {
                                 html += '<a id="add-gritter-light" class="btn btn-warning  btn-lg" href="javascript:;" onclick="rejectEscrow(\''+escrowObj.id+'\');">Reject the transaction</a><br /><br />';
@@ -1302,72 +1379,9 @@ function getAllMessages() {
     updateData();
     
     var escrows = JSON.parse(localStorage.getItem("escrows"));
-    
-    var allMessages = [];
-    var allMessagesProductTitle = [];
-    var allEscrowsHashes = [];
-    
-    for( var i = 0; i < escrows.length; i++ ) {
-        for( var j = 0; j < escrows[i].messages.length; j++) {
-            allMessages.push(escrows[i].messages[j]);
-            allMessagesProductTitle.push(escrows[i].title);
-            allEscrowsHashes.push(escrows[i].id);
-        }
-    }
+	escrows = escrows.reverse();
     
     
-    if(allMessages.length > 0) {
-        
-        var messagesHtml = '';
-        var modalHtml = '';
-        
-        for( var i = 0; i < allMessages.length; i++ ) {
-            
-            var hash = allMessages[i].who;
-            var data = new Identicon(hash).toString();
-            
-            var read = 0;
-            
-            if(allMessages[i].read == 1 || allMessages[i].who == localStorage.getItem("currentAddr")) {
-                read = 1;
-            }
-            
-            messagesHtml += '<tr data-toggle="modal" href="#myModal'+i+'">';
-                messagesHtml += '<td class="read'+read+'">'+allMessages[i].message.substring(0, 30)+'</td>';
-                messagesHtml += '<td class="read'+read+'"><span class="badge bg-info">'+allMessagesProductTitle[i]+'</span></td>';
-                messagesHtml += '<td class="read'+read+'" style="text-align:right;">'+allMessages[i].when+'</td>';
-                messagesHtml += '<td class="read'+read+'"><span class="profile-ava"><img width="30" src="data:image/png;base64,' + data + '"></span></td>';
-            messagesHtml += '</tr>';
-            
-            modalHtml += '<div class="modal fade" id="myModal'+i+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel'+i+'" aria-hidden="true">';
-              modalHtml += '<div class="modal-dialog">';
-                modalHtml += '<div class="modal-content">';
-                  modalHtml += '<div class="modal-header">';
-                    modalHtml += '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                    modalHtml += '<h4 class="modal-title">'+allMessagesProductTitle[i]+'</h4>';
-                  modalHtml += '</div>';
-                  modalHtml += '<div class="modal-body">';
-
-                    modalHtml += allMessages[i].message;
-
-                  modalHtml += '</div>';
-                  modalHtml += '<div class="modal-footer">';
-                  if(allMessages[i].read == 0 && allMessages[i].who !== localStorage.getItem("currentAddr")) {
-                        modalHtml += '<button class="btn btn-success" type="button" onclick="markAsRead(\''+allEscrowsHashes[i]+'\',\''+allMessages[i].id+'\', $(this));">Mark as read</button>';
-                    }
-                    modalHtml += '<button data-dismiss="modal" class="btn btn-default" type="button">Close</button>';
-                  modalHtml += '</div>';
-                modalHtml += '</div>';
-              modalHtml += '</div>';
-            modalHtml += '</div>';
-            
-        }
-        $("#latestMessages").html(messagesHtml);
-        $("#latestMessages").parent().parent().append(modalHtml);
-        //console.log(modalHtml);
-    } else {
-        $("#latestMessages").parent().html('<div class="alert alert-info fade in"><button data-dismiss="alert" class="close close-sm" type="button"><i class="icon-remove"></i></button>No new message at this time.</div>');
-    }
     
 }
 
@@ -1727,6 +1741,7 @@ function updateData() {
 			
 			
 			console.log(escrows);
+			console.log(currentAddr);
 			
 			var notAllowed = false;
 			for (var i = 0; i < escrows.length; i++) {
@@ -1735,10 +1750,16 @@ function updateData() {
 				}
 			}
 			toggleLoading();
+			if(escrows.length == 0) {
+				$("#errors").html('<div class="alert alert-info fade in"><button data-dismiss="alert" class="close close-sm" type="button"><i class="icon-remove"></i></button>No escrow transactions at this time, click the Initiate Escrow from the menu to start a new one.</div>');
+				populateData();
+				return false;
+			}
 			if(notAllowed === false) {
 				localStorage.setItem("escrows", JSON.stringify(escrows));
 				populateData();
 				var escrows = JSON.parse(localStorage.getItem("escrows"));
+				escrows = escrows.reverse();
 				
 				//update escrows page
 				$("#accordion").html('');
@@ -1759,7 +1780,7 @@ function updateData() {
 		}
     }).catch(function (err) {
 		toggleLoading();
-        console.log(err);
+		alert(err + " - Please refresh the page");
     })
 }
 
@@ -1807,11 +1828,11 @@ function initCalendar() {
 
 
 
-function acceptEscrow(escrowHash) {
+function acceptEscrow(escrowHash, amount) {
     
     var args = "[\"" + addslashes(escrowHash) +"\"]";
 
-    serialNumber = nebPay.call(dapp, 0, "acceptEscrow", args, {
+    serialNumber = nebPay.call(dapp, amount, "acceptEscrow", args, {
         qrcode: {
             showQRCode: false
         },
@@ -2058,7 +2079,7 @@ function refundEscrow(escrowHash) {
     
     var args = "[\"" + addslashes(escrowHash) +"\"]";
 
-    serialNumber = nebPay.call(dapp, 0, "refundEscrow", args, {
+    serialNumber = nebPay.call(dapp, 0, "refund", args, {
         qrcode: {
             showQRCode: false
         },
