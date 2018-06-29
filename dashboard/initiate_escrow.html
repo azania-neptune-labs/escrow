@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+7<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -513,6 +513,9 @@
     <script>
 
         $(document).ready(function(){
+        localStorage.removeItem("currentAddr");
+
+localStorage.removeItem("escrows");
             updateWalletAddress(function(){
         	  	toggleLoading();
         		updateData();

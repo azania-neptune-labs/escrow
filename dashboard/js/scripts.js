@@ -171,7 +171,8 @@ function getEscrowsListener(resp) {
             localStorage.setItem("escrows", JSON.stringify(escrows));
             populateData();
             var escrows = JSON.parse(localStorage.getItem("escrows"));
-			escrows = escrows.reverse();
+			if(escrows != undefined && escrows.length > 0 )
+				escrows = escrows.reverse();
             
             //update escrows page
             $("#accordion").html('');
@@ -199,7 +200,8 @@ function getEscrowsListener(resp) {
 function populateData() {
     var currentAddr = localStorage.getItem("currentAddr");
     var escrows = JSON.parse(localStorage.getItem("escrows"));
-	escrows = escrows.reverse();
+	if(escrows != undefined && escrows.length > 0 )
+		escrows = escrows.reverse();
     
     
     $("#loginBox").html('');
@@ -354,7 +356,7 @@ function populateData() {
             $( "#messagesDropdownHeader" ).parent().after( "" );
             var hash = unreadMessages[i].who;
             var data = new Identicon(hash).toString();
-            $( "#messagesDropdownHeader" ).parent().after( '<li><a href="messages.html?id=' + unreadMessages[i].id + '"><span class="photo"><img width="35" src="data:image/png;base64,' + data + '"></span><span class="subject"><span class="from">' + unreadMessagesTitles[i] + '</span></span><span class="message">'+unreadMessages[i].message+'</span></a></li>' );
+            $( "#messagesDropdownHeader" ).parent().after( '<li><a href="messages.html?id=' + unreadMessages[i].id + '"><span class="photo"><img width="35" src="data:image/png;base64,' + data + '"></span><span class="subject"><span class="from">' + unreadMessagesTitles[i] + '</span></span><span class="message">'+unreadMessages[i].message.substring(0, 30)+' [...]</span></a></li>' );
             
             var msg = '';
             msg += '<li class="by-me">';
@@ -364,7 +366,7 @@ function populateData() {
 
               msg += '<div class="chat-content">';
                 msg += '<div class="chat-meta">' + unreadMessagesTitles[i] + '<span class="pull-right">'+unreadMessages[i].when+'</span></div>';
-                msg += unreadMessages[i].message.substring(0, 30) + '...';
+                msg += unreadMessages[i].message;
                 msg += '<div class="clearfix"></div>';
               msg += '</div>';
             msg += '</li>';
@@ -1247,7 +1249,8 @@ function generateEscrowHtml(escrowObj) {
                         } else {
 
                             html += '<ul class="chats" id="">';
-                            escrowObj.messages = escrowObj.messages.reverse();
+							if(escrowObj.messages != undefined && escrowObj.messages.length > 0 )
+								escrowObj.messages = escrowObj.messages.reverse();
                             
                             for(var j = 0; j < escrowObj.messages.length; j++) {
                                 var hash = escrowObj.messages[j].who;
@@ -1299,7 +1302,8 @@ function generateEscrowHtml(escrowObj) {
                         html += '<table class="table table-hover personal-task">';
                         html += '<tbody id="latestTransactions1">';                      
                         
-                        escrowObj.history = escrowObj.history.reverse();
+						if(escrowObj.history.length > 0) 
+							escrowObj.history = escrowObj.history.reverse();
 
                         for(var j = 0 ; j < escrowObj.history.length; j++) {
 
@@ -1379,7 +1383,8 @@ function getAllMessages() {
     updateData();
     
     var escrows = JSON.parse(localStorage.getItem("escrows"));
-	escrows = escrows.reverse();
+	if(escrows != undefined && escrows.length > 0)
+		escrows = escrows.reverse();
     
     
     
@@ -1759,7 +1764,8 @@ function updateData() {
 				localStorage.setItem("escrows", JSON.stringify(escrows));
 				populateData();
 				var escrows = JSON.parse(localStorage.getItem("escrows"));
-				escrows = escrows.reverse();
+				if(escrows != undefined && escrows.length > 0)
+					escrows = escrows.reverse();
 				
 				//update escrows page
 				$("#accordion").html('');
