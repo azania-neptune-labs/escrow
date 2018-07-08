@@ -1503,12 +1503,29 @@ function initiateEscrowListener(resp) {
                     toggleLoading();
                     clearInterval(txTimer);
                 } else if(receipt.execute_result != "") {
-                    $("#errors").html('<div class="alert alert-block alert-success fade in">Escrow has been submited</div>');
-					
-					localStorage.setItem("currentAddr", receipt.from);
-					updateData();
-					$(window).scrollTop(0);
+                    $("#errors").html('<div class="alert alert-block alert-success fade in">Escrow has been submited</div>');					
+                    localStorage.setItem("currentAddr", receipt.from);
+                    updateData();
+                    $(window).scrollTop(0);
                     clearInterval(txTimer);
+                    
+                    
+                    var to = '';
+                    
+                    if ($("input[name=initiator]").val() === 'seller') {
+                        to = $("input[name=buyerEmail]").val();
+                    } else {
+                        to = $("input[name=sellerEmail]").val();
+                    }
+                    
+                    notifyEmail(
+                        "New nas-escrow transaction!", 
+                        "Click here to accept it!", 
+                        to, 
+                        "New nas-escrow transaction", 
+                        "You have a new escrow transaction initiated by: <br /><br /><b>" + receipt.from + "</b><br />", 
+                        $("input[name=title]").val() + " - " + $("textarea[name=notes]").val()
+                    );
                 }
             }); 
         }, 1000);
@@ -1543,6 +1560,39 @@ function sendMessageListener(resp) {
                     $("#messageAlerts").html('<div class="alert alert-block alert-success fade in">Message has been saved.</div>');
                     toggleLoading();
                     clearInterval(txTimer);
+                    
+                    
+                    var escrowId = $("#escrowId").val();
+                    var escrows = JSON.parse(localStorage.getItem('escrows'));
+                    
+                    for (var i=0; i < escrows.length; i++) {
+                        if(escrows[i].id === escrowId) {
+                            var to = '';
+                            
+                            var currentEscrow = escrows[i];
+                            if(receipt.from == currentEscrow.sellerEmail) {
+                                to = currentEscrow.buyerEmail;
+                            } else { 
+                                to = currentEscrow.sellerEmail;
+                            }
+                            
+                            console.log(to);
+                            
+                            notifyEmail(
+                                "Nas-escrow new message!", 
+                                "Get to dashboard and read it!", 
+                                to, 
+                                "Nas-escrow new message!", 
+                                "You have a new escrow message initiated by: <br /><br /> <b>" + receipt.from + "</b><br />", 
+                                "<strong>Message: </strong>" + $('#messageContent').val()
+                            );
+                    
+                            break;
+                        }
+                    }
+                    
+                    
+                    
                 }
             }); 
         }, 1000);
@@ -1608,8 +1658,15 @@ function initiateEscrow(data) {
             var shippingAddress = data[i].value
         }
     }
+    
+    if (initiator === 'seller') {
+        var tmp = sellerEmail;
+        sellerEmail = buyerEmail;
+        buyerEmail = tmp;
+    }
+    
     var errors = [];
-//Arguments validation
+    //Arguments validation
     if(initiator != "seller" && initiator != "buyer") {
         errors.push("Initiator must be either seller or buyer");
     } 
@@ -1681,6 +1738,7 @@ function initiateEscrow(data) {
 
 
 function sendMessage(message, id) {
+    $("#escrowId").val(id);
     $("#messageAlerts").html('');
     if(message.length > 0 && id != '') {
         serialNumber = nebPay.call(dapp, 0, "message", "[\""+id+"\", \""+addslashes(message)+"\"]", {
@@ -1798,6 +1856,7 @@ function updateData() {
 function initCalendar() {
     
     var escrows = JSON.parse(localStorage.getItem("escrows"));
+	$('#calendar').html('');
     /* initialize the calendar
     -----------------------------------------------------------------*/
     if(escrows.length == 0) {
@@ -1835,7 +1894,7 @@ function initCalendar() {
 
 
 function acceptEscrow(escrowHash, amount) {
-    
+    $("#escrowId").val(escrowHash);
     var args = "[\"" + addslashes(escrowHash) +"\"]";
 
     serialNumber = nebPay.call(dapp, amount, "acceptEscrow", args, {
@@ -1873,6 +1932,36 @@ function acceptEscrowListener(resp) {
                     $(window).scrollTop(0);
                     updateData();
                     clearInterval(txTimer);
+                    
+                    
+                    var escrowId = $("#escrowId").val();
+                    var escrows = JSON.parse(localStorage.getItem('escrows'));
+                    
+                    for (var i=0; i < escrows.length; i++) {
+                        if(escrows[i].id === escrowId) {
+                            var to = '';
+                            
+                            var currentEscrow = escrows[i];
+                            if(receipt.from == currentEscrow.sellerEmail) {
+                                to = currentEscrow.buyerEmail;
+                            } else { 
+                                to = currentEscrow.sellerEmail;
+                            }
+                            
+                            console.log(to);
+                            
+                            notifyEmail(
+                                "Your escrow transaction has been accepted!", 
+                                "Get to dashboard to view details!", 
+                                to, 
+                                "Accepted escrow transaction", 
+                                "Your escrow transaction has been accepted: <br /><br /> <b>" + receipt.from + "</b><br />", 
+                                ""
+                            );
+                    
+                            break;
+                        }
+                    }
                 }
             }); 
         }, 1000);
@@ -1885,7 +1974,7 @@ function acceptEscrowListener(resp) {
 
 
 function rejectEscrow(escrowHash) {
-    
+    $("#escrowId").val(escrowHash);
     var args = "[\"" + addslashes(escrowHash) +"\"]";
 
     serialNumber = nebPay.call(dapp, 0, "rejectEscrow", args, {
@@ -1923,6 +2012,35 @@ function rejectEscrowListener(resp) {
                     $(window).scrollTop(0);
                     updateData();
                     clearInterval(txTimer);
+                    
+                    var escrowId = $("#escrowId").val();
+                    var escrows = JSON.parse(localStorage.getItem('escrows'));
+                    
+                    for (var i=0; i < escrows.length; i++) {
+                        if(escrows[i].id === escrowId) {
+                            var to = '';
+                            
+                            var currentEscrow = escrows[i];
+                            if(receipt.from == currentEscrow.sellerEmail) {
+                                to = currentEscrow.buyerEmail;
+                            } else { 
+                                to = currentEscrow.sellerEmail;
+                            }
+                            
+                            console.log(to);
+                            
+                            notifyEmail(
+                                "Rejected escrow transaction", 
+                                "Get to dashboard", 
+                                to, 
+                                "Rejected escrow transaction", 
+                                "Your escrow transaction has been rejected by: <br /><br /> <b>" + receipt.from + "</b><br />", 
+                                ""
+                            );
+                    
+                            break;
+                        }
+                    }
                 }
             }); 
         }, 1000);
@@ -1985,6 +2103,8 @@ function depositFundsListener(resp) {
 
 function ship(escrowHash, tracking, operator, info) {
     
+    $("#escrowId").val(escrowHash);
+    
     var args = "[\"" + addslashes(escrowHash) +"\",\"" + addslashes(tracking) +"\",\"" + addslashes(operator) +"\",\"" + addslashes(info) +"\"]";
 
     serialNumber = nebPay.call(dapp, 0, "ship", args, {
@@ -2022,6 +2142,36 @@ function shipListener(resp) {
                     $(window).scrollTop(0);
                     updateData();
                     clearInterval(txTimer);
+                    
+                    
+                    var escrowId = $("#escrowId").val();
+                    var escrows = JSON.parse(localStorage.getItem('escrows'));
+                    
+                    for (var i=0; i < escrows.length; i++) {
+                        if(escrows[i].id === escrowId) {
+                            var to = '';
+                            
+                            var currentEscrow = escrows[i];
+                            if(receipt.from == currentEscrow.sellerEmail) {
+                                to = currentEscrow.buyerEmail;
+                            } else { 
+                                to = currentEscrow.sellerEmail;
+                            }
+                            
+                            console.log(to);
+                            
+                            notifyEmail(
+                                "The products have been shipped/delivered", 
+                                "Get to dashboard to view details!", 
+                                to, 
+                                "Delievered escrow transaction", 
+                                "The products have been shipped/delivered by: <br /><br /> <b>" + receipt.from + "</b><br />", 
+                                ""
+                            );
+                    
+                            break;
+                        }
+                    }
                 }
             }); 
         }, 1000);
@@ -2033,7 +2183,7 @@ function shipListener(resp) {
 
 
 function initiateDispute(escrowHash, reason) {
-    
+    $("#escrowId").val(escrowHash);
     var args = "[\"" + addslashes(escrowHash) +"\",\"" + addslashes(reason) +"\"]";
 
     serialNumber = nebPay.call(dapp, 0, "initiateDispute", args, {
@@ -2071,6 +2221,36 @@ function initiateDisputeListener(resp) {
                     $(window).scrollTop(0);
                     updateData();
                     clearInterval(txTimer);
+                    
+                    var escrowId = $("#escrowId").val();
+                    var escrows = JSON.parse(localStorage.getItem('escrows'));
+                    
+                    for (var i=0; i < escrows.length; i++) {
+                        if(escrows[i].id === escrowId) {
+                            var to = '';
+                            
+                            var currentEscrow = escrows[i];
+                            if(receipt.from == currentEscrow.sellerEmail) {
+                                to = currentEscrow.buyerEmail;
+                            } else { 
+                                to = currentEscrow.sellerEmail;
+                            }
+                            
+                            console.log(to);
+                            
+                            notifyEmail(
+                                "Disputed escrow transaction", 
+                                "Get to dashboard", 
+                                to, 
+                                "Dispute initiation", 
+                                "Your escrow transaction has been disputed by: <br /><br /> <b>" + receipt.from + "</b><br />", 
+                                "<strong>Reason: </strong>" + $('#disputeReason'+escrowId).val()
+                            );
+                    
+                            break;
+                        }
+                    }
+                    
                 }
             }); 
         }, 1000);
@@ -2082,6 +2262,8 @@ function initiateDisputeListener(resp) {
 
 
 function refundEscrow(escrowHash) {
+    
+    $("#escrowId").val(escrowHash);
     
     var args = "[\"" + addslashes(escrowHash) +"\"]";
 
@@ -2120,6 +2302,35 @@ function refundEscrowListener(resp) {
                     $(window).scrollTop(0);
                     updateData();
                     clearInterval(txTimer);
+                    
+                    var escrowId = $("#escrowId").val();
+                    var escrows = JSON.parse(localStorage.getItem('escrows'));
+                    
+                    for (var i=0; i < escrows.length; i++) {
+                        if(escrows[i].id === escrowId) {
+                            var to = '';
+                            
+                            var currentEscrow = escrows[i];
+                            if(receipt.from == currentEscrow.sellerEmail) {
+                                to = currentEscrow.buyerEmail;
+                            } else { 
+                                to = currentEscrow.sellerEmail;
+                            }
+                            
+                            console.log(to);
+                            
+                            notifyEmail(
+                                "The escrow transaction has been refunded", 
+                                "Get to dashboard to view details!", 
+                                to, 
+                                "Refunded escrow transaction", 
+                                "Your escrow transaction has been refunded: <br /><br /> <b>" + receipt.from + "</b><br />", 
+                                ""
+                            );
+                    
+                            break;
+                        }
+                    }
                 }
             }); 
         }, 1000);
@@ -2131,6 +2342,8 @@ function refundEscrowListener(resp) {
 
 
 function releaseFunds(escrowHash) {
+    
+    $("#escrowId").val(escrowHash);
     
     var args = "[\"" + addslashes(escrowHash) +"\"]";
 
@@ -2169,6 +2382,35 @@ function releaseFundsListener(resp) {
                     $(window).scrollTop(0);
                     updateData();
                     clearInterval(txTimer);
+                    
+                    var escrowId = $("#escrowId").val();
+                    var escrows = JSON.parse(localStorage.getItem('escrows'));
+                    
+                    for (var i=0; i < escrows.length; i++) {
+                        if(escrows[i].id === escrowId) {
+                            var to = '';
+                            
+                            var currentEscrow = escrows[i];
+                            if(receipt.from == currentEscrow.sellerEmail) {
+                                to = currentEscrow.buyerEmail;
+                            } else { 
+                                to = currentEscrow.sellerEmail;
+                            }
+                            
+                            console.log(to);
+                            
+                            notifyEmail(
+                                "Congratulations, the funds have been released!", 
+                                "Get to dashboard to view details!", 
+                                to, 
+                                "Released escrow transaction", 
+                                "Your escrow transaction has been completed and the funds have been credited to your account by: <br /><br /> <b>" + receipt.from + "</b><br />", 
+                                ""
+                            );
+                    
+                            break;
+                        }
+                    }
                 }
             }); 
         }, 1000);
@@ -2218,5 +2460,27 @@ function updateWalletAddress(callback) {
             }
         }else{
         }
+    });
+}
+
+
+
+function notifyEmail(subject, cta, to, preheader, content, description) {
+    $.ajax({
+        type: 'POST',
+        url: 'notify.php',
+        headers: {
+            "CsrfToken" : $("#csrfToken").val(),
+        },
+        data: {
+            cta: cta, 
+            to: to,
+            preheader: preheader,
+            content: content,
+            description: description,
+            subject: subject
+        }
+    }).done(function(data) { 
+        console.log(data);
     });
 }
