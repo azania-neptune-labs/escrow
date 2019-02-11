@@ -62,7 +62,7 @@
       </div>
 
       <!--logo start-->
-      <a href="index.php" class="logo">NAS-ESCROW <span class="lite">Control Panel</span></a>
+      <a href="index.php" class="logo">Azania ESCROW <span class="lite">Control Panel</span></a>
       <!--logo end-->
 
       <!--<div class="nav search-row" id="top_menu">
