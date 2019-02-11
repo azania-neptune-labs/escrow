@@ -10,7 +10,7 @@
   <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
   <link rel="shortcut icon" href="img/favicon.png">
 
-  <title>Nas-Escrow dashboard - Message box</title>
+  <title>Azania Escrow dashboard - Message box</title>
 
   <!-- Bootstrap CSS -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -58,7 +58,7 @@
       </div>
 
       <!--logo start-->
-      <a href="index.php" class="logo">NAS-ESCROW <span class="lite">Control Panel</span></a>
+      <a href="index.php" class="logo">Azania ESCROW <span class="lite">Control Panel</span></a>
       <!--logo end-->
 
       <!--<div class="nav search-row" id="top_menu">
