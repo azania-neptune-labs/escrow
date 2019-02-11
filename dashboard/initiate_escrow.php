@@ -10,7 +10,7 @@
   <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
   <link rel="shortcut icon" href="img/favicon.png">
 
-  <title>Nas-Escrow dashboard - Initiate the transaction</title>
+  <title>Azanian Escrow dashboard - Initiate the transaction</title>
 
   <!-- Bootstrap CSS -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -316,7 +316,7 @@
                             <select name="productType" class="form-control input-lg" onchange="changeProductType(this);">
                                 
                                 <option value="other">Other</option>
-                                <option value="vehicle">Motor-Vehicle</option>
+                                <option value="vehicle" hidden="true">Motor-Vehicle</option>
                             </select>
                         </div>
                         <div class="clearfix"></div>
@@ -326,7 +326,7 @@
                         <label class="col-sm-2 control-label">Description</label>
                         <div class="col-sm-10">
                           <input name="productDescription" class="form-control input-lg" placeholder="What are you buying/selling?" type="text">
-                          <span class="help-block">Please provide an accurate description of the product. This will be checked and agreed before releasing the funds.</span>
+                          <span class="help-block">Please provide an accurate description of the product. This will be checked and agreed before releasing the funds. Description should give be as accurate as possible to avoid disputes. </span>
                         </div>
                         <div class="clearfix"></div>
                       </div>
@@ -392,14 +392,14 @@
                   <div class="panel-body">
 
                        <div class="form-group m-bot15">
-                        <label class="col-sm-2 control-label">Who pays the shipping</label>
+                        <label class="col-sm-2 control-label">Who pays for shipping or service fees.</label>
                         <div class="col-sm-10">
                             <div class="radios">
                                 <label class="label_radio r_on" for="radio-01">
                                                           <input name="shippingWhoPays" id="radio-01" value="buyer" checked="" type="radio"> Buyer
                                                       </label>
                                 <label class="label_radio r_off" for="radio-02">
-                                                          <input name="shippingWhoPays" id="radio-02" value="seller" type="radio"> Seller
+                                                          <input name="shippingWhoPays" id="radio-02" value="seller" type="radio"> Seller/ service provider
                                                       </label>
                                 <label class="label_radio r_off" for="radio-03">
                                                           <input name="shippingWhoPays" id="radio-03" value="50/50" type="radio"> 50/50
@@ -410,7 +410,7 @@
                       </div>
                       
                       <div class="form-group m-bot15">
-                        <label class="col-sm-2 control-label">Shipping cost</label>
+                        <label class="col-sm-2 control-label">Shipping cost/service fees</label>
                         <div class="col-sm-10">
                           <input name="shippingCost" class="form-control input-lg m-bot15" placeholder="The total shipping cost in NAS" type="number">
                         </div>
