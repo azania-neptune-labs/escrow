@@ -455,7 +455,9 @@
             Licensing information: https://bootstrapmade.com/license/
             Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
           -->
-          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+          Coded by <a href="https://bootstrapmade.com/">Azania Neptune Labs</a><br>
+              libraries by <a href="https://bootstrapmade.com/">Bootstrapmade</a><br>
+		& <a href="nebulas.io">The Nebulas</a>
         </div>
       </div>
     </section>
