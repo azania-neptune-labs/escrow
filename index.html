@@ -348,7 +348,8 @@
      const uport = new Connect('MyDApp')
      //Ask the user for their address information
      //by using default disclosure behavior.
-     uport.requestDisclosure()
+     uport.requestDisclosure({ requested: ['name'],
+                               notifications: true})
 
      uport.onResponse('disclosureReq').then(res => {
        const did = res.payload.did
