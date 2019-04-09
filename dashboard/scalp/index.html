@@ -5,6 +5,7 @@
 
 <body>
   <script src="https://unpkg.com/ipfs/dist/index.min.js"></script>
+  <script type="javascript">
 const node = new IPFS()
 
 const data = 'Hello, <skywalker>'
@@ -21,6 +22,7 @@ node.once('ready', () => {
     console.log(files[0].hash)
   })
 })
+  </script>
 <p>
 Test site
 </p>
