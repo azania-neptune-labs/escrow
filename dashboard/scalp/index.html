@@ -6,12 +6,15 @@
 <body>
   <script src="https://unpkg.com/ipfs/dist/index.min.js"></script>
   <script type="javascript">
-const node = new IPFS()
+const node = new IPFS({repo: 'ipfs-' + Math.random()})
 
 const data = 'Hello, <skywalker>'
 
 // once the node is ready
 node.once('ready', () => {
+console.log('Online status: ', node.isOnline() ? 'online' : 'offline')
+
+document.getElementById("status").innerHtml= 'Node status:' + (node.isOnline() ? 'online' : 'offline'  ) 
   // convert your data to a Buffer and add it to IPFS
   node.files.add(node.types.Buffer.from(data), (err, files) => {
     if (err) return console.error(err)
