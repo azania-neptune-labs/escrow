@@ -9,26 +9,7 @@
   <meta name="author" content="GeeksLabs">
   <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
   <link rel="shortcut icon" href="img/favicon.png">
-	<script src="https://unpkg.com/ipfs/dist/index.min.js"></script>
-  <script type="text/javascript">
-	const node = new Ipfs({ repo: 'ipfs-' + Math.random() })
-    const data = 'Hello, <Skywalker>'
-    node.once('ready', () => {
-      console.log('Online status: ', node.isOnline() ? 'online' : 'offline')
-      document.getElementById("status").innerHTML= 'Node status: ' + (node.isOnline() ? 'online' : 'offline')
-      // You can write more code here to use it. Use methods like
-      // node.add, node.get. See the API docs here:
-      // https://github.com/ipfs/interface-ipfs-core
-      node.files.add(node.types.Buffer.from(data), (err, files) => {
-    if (err) return console.error(err)
-    // 'hash', known as CID, is a string uniquely addressing the data
-    // and can be used to get it again. 'files' is an array because
-    // 'add' supports multiple additions, but we only added one entry
-    console.log(files[0].hash)
-      
-    })
-      })
-  </script>
+
 
   <title>Azania Nas Escrow dashboard</title>
 
@@ -61,6 +42,26 @@
     Author: BootstrapMade
     Author URL: https://bootstrapmade.com
   ======================================================= -->
+		<script src="https://unpkg.com/ipfs/dist/index.min.js"></script>
+  <script type="text/javascript">
+	const node = new Ipfs({ repo: 'ipfs-' + Math.random() })
+    const data = 'Hello, <Skywalker>'
+    node.once('ready', () => {
+      console.log('Online status: ', node.isOnline() ? 'online' : 'offline')
+      document.getElementById("status").innerHTML= 'Node status: ' + (node.isOnline() ? 'online' : 'offline')
+      // You can write more code here to use it. Use methods like
+      // node.add, node.get. See the API docs here:
+      // https://github.com/ipfs/interface-ipfs-core
+      node.files.add(node.types.Buffer.from(data), (err, files) => {
+    if (err) return console.error(err)
+    // 'hash', known as CID, is a string uniquely addressing the data
+    // and can be used to get it again. 'files' is an array because
+    // 'add' supports multiple additions, but we only added one entry
+    console.log(files[0].hash)
+      
+    })
+      })
+  </script>
 </head>
 
 <body>
